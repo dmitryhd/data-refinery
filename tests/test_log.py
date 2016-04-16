@@ -17,4 +17,4 @@ class TestLog(unittest.TestCase):
 
     def test_configure_logger(self):
         logger = log.configure_logger()
-        self.assertEqual(len(logger.handlers), 3)
+        self.assertEqual(len(logger.handlers), 2)
