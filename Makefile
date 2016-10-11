@@ -1,30 +1,38 @@
-PYTHON?=python3
-PYTHONPATH?=./
 SOURCE_DIR=./refinery
 TESTS_DIR=./tests
-TESTS_ARGS=-m pytest $(TESTS_DIR) -v
-COVERAGE=coverage
 COVERAGE_HTML_REPORT_DIR?=./htmlcov/
-PEP8=pep8
 
-clean: clean-pyc clean-test
+all: help
 
-clean-pyc:
+help:
+	@echo "clean - remove artifacts"
+	@echo "test - run tests"
+	@echo "coverage - run tests with code coverage"
+	@echo "htmlcoverage - run tests with code coverage and generate html report"
+	@echo "check - check code style"
+
+clean:
 	@find . -name '*.py[cod]' -exec rm -f {} +
 	@find . -name '__pycache__' -exec rm -rf {} +
 	@find . -name '*$py.class' -exec rm -rf {} +
-
-clean-test:
 	@rm -rf $(COVERAGE_HTML_REPORT_DIR)
 
-test: clean
-	PYTHONPATH=$(PYTHONPATH) $(PYTHON) $(TESTS_ARGS)
+deploy: test
+	@echo "Push"
+	git push
+	@echo "Deploy"
+	@./bin/deploy.sh
+
+test: clean check
+	@py.test -q
 
 coverage: clean
-	py.test --cov=refinery
+	@py.test -q --cov=$(SOURCE_DIR)
 
-htmlcoverage: clean
-	py.test --cov=refinery --cov-report=html
+htmlcoverage:
+	@py.test -q --cov=$(SOURCE_DIR) --cov-report=html && google-chrome ./htmlcov/index.html
+
+check: pep8
 
 pep8:
-	@$(PEP8) $(SOURCE_DIR) $(TESTS_DIR)
+	@pep8 $(SOURCE_DIR) $(TESTS_DIR)
