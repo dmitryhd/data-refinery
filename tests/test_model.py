@@ -32,3 +32,15 @@ class TestModel(unittest.TestCase):
             model.add_df('df1', df, format='wrong')
         with self.assertRaises(Warning):
             model.get_df('df1', format='wrong')
+
+    def test_model_json(self):
+        root_dir = tempfile.TemporaryDirectory()
+        model = Model(name='md', root_dir=root_dir.name)
+
+        info = {'value1': 10, 'value2': 'omg'}
+        model.add_dict(info, 'info')
+        got_info = model.get_dict('info')
+        self.assertEqual(got_info, info)
+
+        got_info = model.get_dict('not_exists')
+        self.assertEqual(got_info, {})

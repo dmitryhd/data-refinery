@@ -1,4 +1,5 @@
 import os
+import json
 from os.path import join
 
 import pandas as pd
@@ -38,6 +39,20 @@ class Model:
             return _df_read_csv(file_path, sep)
         else:
             raise Warning('Wrong format. csv or hdf supported.')
+
+    def add_dict(self, info: dict, filename: str):
+        file_path = self.path_to(filename) + '.json'
+        with open(file_path, 'w') as fd:
+            json.dump(info, fd, ensure_ascii=False, indent=4, sort_keys=True)
+
+    def get_dict(self, filename: str) -> dict:
+        file_path = self.path_to(filename) + '.json'
+        try:
+            with open(file_path) as fd:
+                return json.load(fd)
+        except FileNotFoundError:
+            print('{} to not exists'.format(file_path))
+            return {}
 
     def __repr__(self):
         return "<Model {}, dir: {}>".format(self.name, self.path)
