@@ -4,4 +4,4 @@ MAINTAINER Dmitrii Khodakov <>
 COPY . /app
 WORKDIR /app
 RUN pip install -r requirements.txt
-CMD ["make test"]
+CMD ["py.test", "-q"]
