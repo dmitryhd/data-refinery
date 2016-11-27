@@ -36,3 +36,9 @@ check: pep8
 
 pep8:
 	@pep8 $(SOURCE_DIR) $(TESTS_DIR)
+
+docker-build:
+	@docker build -t data-refinery:latest .
+
+docker-run-test:
+	@docker run data-refinery
