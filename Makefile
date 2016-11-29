@@ -17,12 +17,6 @@ clean:
 	@find . -name '*$py.class' -exec rm -rf {} +
 	@rm -rf $(COVERAGE_HTML_REPORT_DIR)
 
-deploy: test
-	@echo "Push"
-	git push
-	@echo "Deploy"
-	@./bin/deploy.sh
-
 test: clean check
 	@py.test -q
 
@@ -38,7 +32,7 @@ pep8:
 	@pep8 $(SOURCE_DIR) $(TESTS_DIR)
 
 docker-build:
-	@docker build -t data-refinery:latest .
+	@docker build -t data-refinery:test .
 
-docker-run-test:
-	@docker run data-refinery
+docker-test: docker-build
+	@docker run data-refinery:test
