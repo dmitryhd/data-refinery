@@ -19,6 +19,11 @@ class TestModel(unittest.TestCase):
         df2 = model.get_df('df1')
         self.assertEqual(df.to_dict(), df2.to_dict())
 
+        model.add_df('df2', df, file_format='csv')
+        df2 = model.get_df('df2', file_format='csv')
+        self.assertEqual(df.to_dict(), df2.to_dict())
+
+
     def test_repr(self):
         temp_dir = tempfile.TemporaryDirectory()
         model = Model('t1', temp_dir.name)
@@ -29,9 +34,9 @@ class TestModel(unittest.TestCase):
         model = Model('t2', temp_dir.name)
         df = pd.DataFrame({'a': [1]})
         with self.assertRaises(Warning):
-            model.add_df('df1', df, format='wrong')
+            model.add_df('df1', df, file_format='wrong')
         with self.assertRaises(Warning):
-            model.get_df('df1', format='wrong')
+            model.get_df('df1', file_format='wrong')
 
     def test_model_json(self):
         root_dir = tempfile.TemporaryDirectory()

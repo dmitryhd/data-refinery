@@ -23,20 +23,26 @@ class Model:
     def path_to(self, filename: str) -> str:
         return join(self.path, filename)
 
-    def add_df(self, name: str, df: pd.DataFrame, format='csv', sep=';'):
+    def add_df(self, name: str, df: pd.DataFrame, file_format='hdf', sep=','):
         """ Save dataframe on disk (in model directory). """
         assert isinstance(name, str), 'Wrong usage, pass name first'
-        if format == 'csv':
+        if file_format == 'csv':
             file_path = self.path_to(name + '.csv')
             _df_write_csv(df, file_path, sep=sep)
+        elif file_format == 'hdf':
+            file_path = self.path_to(name + '.hd5')
+            _df_write_hdf(df, file_path)
         else:
             raise Warning('Wrong format. csv or hdf supported.')
 
-    def get_df(self, name: str, sep=';', format='csv') -> pd.DataFrame:
+    def get_df(self, name: str, file_format='hdf', sep=';') -> pd.DataFrame:
         """ Read dataframe from model directory. """
-        if format == 'csv':
+        if file_format == 'csv':
             file_path = self.path_to(name + '.csv')
             return _df_read_csv(file_path, sep)
+        elif file_format == 'hdf':
+            file_path = self.path_to(name + '.hd5')
+            return _df_read_hdf(file_path)
         else:
             raise Warning('Wrong format. csv or hdf supported.')
 
@@ -58,9 +64,17 @@ class Model:
         return "<Model {}, dir: {}>".format(self.name, self.path)
 
 
-def _df_read_csv(filename: str, sep=';'):
+def _df_read_csv(filename: str, sep=',') -> pd.DataFrame:
     return pd.read_csv(filename, sep, header=0)
 
 
-def _df_write_csv(dataframe: pd.DataFrame, filename: str, sep=';'):
+def _df_write_csv(dataframe: pd.DataFrame, filename: str, sep=','):
     dataframe.to_csv(filename, header=True, sep=sep, index=False)
+
+
+def _df_read_hdf(filename: str) -> pd.DataFrame:
+    return pd.read_hdf(filename, 'only')
+
+
+def _df_write_hdf(dataframe: pd.DataFrame, filename: str):
+    dataframe.to_hdf(filename, 'only')
