@@ -1,4 +1,4 @@
-pandas>=0.18.1
+pandas>=0.19.1
 tables>=3.3.0
 pytest
 pytest-cov
