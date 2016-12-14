@@ -1,1 +1,1 @@
-from .model import Model
+from . data_storage import ModelDataStorage

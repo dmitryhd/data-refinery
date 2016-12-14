@@ -3,13 +3,13 @@ import tempfile
 import logging
 
 import refinery.log as log
-from refinery import Model
+from refinery import ModelDataStorage
 
 
 class TestLog(unittest.TestCase):
     def setUp(self):
         self.root_dir = tempfile.TemporaryDirectory()
-        self.model = Model(name='md', root_dir=self.root_dir.name)
+        self.model = ModelDataStorage(name='md', root_dir=self.root_dir.name)
 
     def tearDown(self):
         logger = logging.getLogger(log.LOGGER_NAME)

@@ -7,7 +7,7 @@ import pandas as pd
 DEFAULT_MODEL_DIR = '/tmp/'
 
 
-class Model:
+class ModelDataStorage:
     """
     Container class for model.
     All dataframes and sframes (as csv) stored in this model's directory.
