@@ -17,7 +17,7 @@ clean:
 	@find . -name '*$py.class' -exec rm -rf {} +
 	@rm -rf $(COVERAGE_HTML_REPORT_DIR)
 
-test: clean check
+test: clean
 	@py.test -q
 
 coverage: clean
@@ -32,7 +32,7 @@ pep8:
 	@pep8 $(SOURCE_DIR) $(TESTS_DIR)
 
 docker-build:
-	@docker build -t data-refinery:test .
+	@docker build -t data-refinery .
 
 docker-test: docker-build
 	@docker run data-refinery:test

@@ -12,6 +12,7 @@ class ModelDataStorage:
     Container class for model.
     All dataframes and sframes (as csv) stored in this model's directory.
     """
+    
     def __init__(self, name: str, root_dir: str = DEFAULT_MODEL_DIR):
         self.name = name
         self.root_dir = root_dir
